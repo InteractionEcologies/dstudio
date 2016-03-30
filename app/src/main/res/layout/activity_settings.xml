@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
-    <EditTextPreference
+    <!--<EditTextPreference
         android:title="Your Name"
         android:key="username"
         android:summary="Please provide your username">
@@ -20,5 +20,13 @@
         android:key="downloadType"
         android:defaultValue="1"
         android:entries="@array/listArray"
-        android:entryValues="@array/listValues" />
+        android:entryValues="@array/listValues" /> -->
+    <edu.umich.dstudio.ui.customview.preferences.TimePreference
+        android:title="Wake up time"
+        android:summary="This is the time when the notifications will be enabled"
+        android:key="startTime"/>
+    <edu.umich.dstudio.ui.customview.preferences.TimePreference
+        android:title="Bed  time"
+        android:summary="This is the time when the notifications will be disabled"
+        android:key="endTime"/>
 </PreferenceScreen>
