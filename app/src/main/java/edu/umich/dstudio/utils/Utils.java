@@ -107,6 +107,14 @@ public class Utils {
         String wakeUpTime = gSharedPreferences.getPreference("startTime");
         String bedTime = gSharedPreferences.getPreference("endTime");
 
+        // todo : handling default null values. Should be changed to be set in settings directly
+        if(wakeUpTime == null || wakeUpTime==""){
+            wakeUpTime = "8:0";
+        }
+        if(bedTime == null || bedTime==""){
+            bedTime = "20:0";
+        }
+
         int secondsPassedAfterMidnightAtStartTime = convertStringTimetoSeconds(wakeUpTime) - midnightSeconds;
         int secondsPassedAfterMidnightAtEndTime = convertStringTimetoSeconds(bedTime) - midnightSeconds;
 

@@ -54,4 +54,5 @@ dependencies {
 
     /** Third party libraries for some UI stuff */
     compile 'com.github.boxme:squarecamera:1.1.0'
+    compile 'com.h6ah4i.android.compat:mulsellistprefcompat:1.0.0'
 }

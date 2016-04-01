@@ -4,23 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
-    <!--<EditTextPreference
-        android:title="Your Name"
-        android:key="username"
-        android:summary="Please provide your username">
-    </EditTextPreference>
-    <CheckBoxPreference
-        android:title="Application Updates"
-        android:defaultValue="false"
-        android:summary="This option if selected will allow the application to check for latest versions."
-        android:key="applicationUpdates" />
-    <ListPreference
-        android:title="Download Details"
-        android:summary="Select the kind of data that you would like to download"
-        android:key="downloadType"
-        android:defaultValue="1"
-        android:entries="@array/listArray"
-        android:entryValues="@array/listValues" /> -->
     <edu.umich.dstudio.ui.customview.preferences.TimePreference
         android:title="Wake up time"
         android:summary="This is the time when the notifications will be enabled"
@@ -29,4 +12,16 @@
         android:title="Bed  time"
         android:summary="This is the time when the notifications will be disabled"
         android:key="endTime"/>
+    <com.h6ah4i.android.compat.preference.MultiSelectListPreferenceCompat
+        android:title="GM  time"
+        android:summary="Select all the times that you need to take glucose readings"
+        android:key="gmTimes"
+        android:entries="@array/listArray"
+        android:entryValues="@array/listValues"/>
+    <com.h6ah4i.android.compat.preference.MultiSelectListPreferenceCompat
+        android:title="Insulin  time"
+        android:summary="Select all the times that you need to take insulin"
+        android:key="insulinTimes"
+        android:entries="@array/listArray"
+        android:entryValues="@array/listValues"/>
 </PreferenceScreen>
