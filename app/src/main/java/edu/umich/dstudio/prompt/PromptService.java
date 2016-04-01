@@ -31,7 +31,7 @@ import edu.umich.dstudio.utils.Utils;
 /**
  * Created by neera_000 on 3/27/2016.
  *
- * This service runs ever @link{Constants.PROMPT_SERVICE_REPEAT_MILLISECONDS} to upload the client's
+ * This service runs every @link{Constants.PROMPT_SERVICE_REPEAT_MILLISECONDS} to upload the client's
  * current location as well as to check if any notifications need to be shown to the client.
  */
 public class PromptService extends Service implements
@@ -51,9 +51,10 @@ public class PromptService extends Service implements
             mCurrentlyProcessingLocation = true;
             attemptToGetLocation();
         }
-        if (Utils.shouldShowNotification() &&
-                GSharedPreferences.getInstance().getPreference(Constants.CAN_SHOW_NOTIFICATION).equals(Constants.YES)) {
-            createNotification();
+        PromptConfig pendingNotificationConfig = Utils.getPromptConfigForPendingNotification();
+        if (GSharedPreferences.getInstance().getPreference(Constants.CAN_SHOW_NOTIFICATION).equals(Constants.YES)
+                &&  pendingNotificationConfig != null) {
+            createNotification(pendingNotificationConfig);
         }
         return START_NOT_STICKY;
     }
@@ -82,7 +83,7 @@ public class PromptService extends Service implements
         }
     }
 
-    private void createNotification() {
+    private void createNotification(PromptConfig pendingNotificationConfig) {
         PackageManager pm = getPackageManager();
         Intent launchIntent = pm.getLaunchIntentForPackage("edu.umich.dstudio");
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, launchIntent, 0);

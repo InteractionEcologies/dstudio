@@ -1,6 +1,9 @@
 package edu.umich.dstudio.utils;
 
 
+import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,28 +11,38 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+
+import edu.umich.dstudio.prompt.PromptConfig;
 
 /**
  * Created by neera_000 on 3/26/2016.
  */
 public class Utils {
 
-    public static HashMap<Integer, HashMap<String, Integer>> intervals = new HashMap<Integer, HashMap<String, Integer>>();
+    public static String LOG_TAG = Utils.class.getSimpleName();
+    //public static HashMap<Integer, HashMap<String, Integer>> intervals = new HashMap<Integer, HashMap<String, Integer>>();
 
-    public static void setIntervalsForMoodRandomization(int n){
-        int numberOfPromptsNeeded = n;
-        GSharedPreferences gSharedPreferences = GSharedPreferences.getInstance();
-        String wakeUpTime = gSharedPreferences.getPreference("startTime");
-        String bedTime = gSharedPreferences.getPreference("endTime");
-
-        int startTime = convertStringTimetoSeconds(wakeUpTime);
-        int endTime = convertStringTimetoSeconds(bedTime);
+    /**
+     * Given the startTime and endTime in seconds from midnight, and number of prompts to show to
+     * the user every day, generates an interval hashmap with the start and end time of each
+     * interval.
+     * @param numberOfPromptsNeeded
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public static Map<Integer, HashMap<String, Integer>> getIntervalsForMoodRandomization(
+            int numberOfPromptsNeeded,
+            int startTime,
+            int endTime){
+        Map<Integer, HashMap<String, Integer>> intervals = new HashMap<>();
         int intervalLenghtInSeconds = (endTime - startTime)/numberOfPromptsNeeded;
 
         int start;
         int end = startTime;
 
-        for(int i=0; i<n; i++){
+        for(int i = 0; i < numberOfPromptsNeeded; i++){
             HashMap<String, Integer> map = new HashMap<>();
             start = end;
             map.put("start", start);
@@ -37,12 +50,16 @@ public class Utils {
             map.put("end", end);
             intervals.put(i, map);
         }
-
+        return intervals;
     }
 
-    public static int[] getTimesForRandomMoodPrompts() {
-        //get intervals
-        //generate random numbers between those intervals
+    /**
+     * Given an interval hashmap, picks random times between the interval start time and end time
+     * and returns and array of integers at which the prompts should be shown.
+     * @param intervals
+     * @return
+     */
+    public static List<Integer> getTimesForRandomMoodPrompts(Map<Integer, HashMap<String, Integer>> intervals) {
         LinkedList<Integer> notificationTimes = new LinkedList<>();
         Random rand = new Random();
         Iterator<Map.Entry<Integer, HashMap<String, Integer>>> iterator = intervals.entrySet().iterator();
@@ -56,7 +73,7 @@ public class Utils {
             notificationTimes.add(randomNum);
 
         }
-        return toIntArray(notificationTimes);
+        return notificationTimes;
     }
 
     /**
@@ -80,32 +97,12 @@ public class Utils {
      * 72000 (i.e. you get what I'm saying)
      * @return
      */
-    public static int[] getTimesForNotification() {
-        return new int[] {
-            43200, 57600, 72000, 79200, 81000, 83400
-        };
-    }
-
-    /**
-     * Gets all the times at which a notification needs to be shown, and check if the current time
-     * is within a window of 15 minutes from that time. Returns true if that is the case, false
-     * otherwise.
-     * @return true if current time is within a 15 minutes window of a time at which a notification
-     * needs to be shown. False otherwise.
-     */
-    public static boolean shouldShowNotification() {
-        Calendar c = Calendar.getInstance();
-        long now = c.getTimeInMillis();
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        int midnightSeconds = (int) c.getTimeInMillis()/1000;
-        int secondsPassedAfterMidnight = (int) now/1000 - midnightSeconds;
-
+    public static List<PromptConfig> getTimesAndConfigForNotification() {
         GSharedPreferences gSharedPreferences = GSharedPreferences.getInstance();
         String wakeUpTime = gSharedPreferences.getPreference("startTime");
         String bedTime = gSharedPreferences.getPreference("endTime");
+        Set<String> insulinTimes = gSharedPreferences.getHashSetPreference("insulinTimes");
+        Set<String> gmTimes = gSharedPreferences.getHashSetPreference("gmTimes");
 
         // todo : handling default null values. Should be changed to be set in settings directly
         if(wakeUpTime == null || wakeUpTime==""){
@@ -115,18 +112,64 @@ public class Utils {
             bedTime = "20:0";
         }
 
-        int secondsPassedAfterMidnightAtStartTime = convertStringTimetoSeconds(wakeUpTime) - midnightSeconds;
-        int secondsPassedAfterMidnightAtEndTime = convertStringTimetoSeconds(bedTime) - midnightSeconds;
+        Log.d(LOG_TAG, "Settings information: Wake - " + wakeUpTime +
+                " Sleep - " + bedTime +
+                " Insulin - " + insulinTimes.toString() +
+                " GM Time - " + gmTimes.toString());
+        List<Integer> notificationTimes = getTimesForRandomMoodPrompts(
+                getIntervalsForMoodRandomization(3,
+                        convertStringTimeToSeconds(wakeUpTime),
+                        convertStringTimeToSeconds(bedTime)));
+        Log.d(LOG_TAG, "Notification Times:" + notificationTimes.toString());
 
-        for(int i:getTimesForNotification()) {
-            if(secondsPassedAfterMidnight> secondsPassedAfterMidnightAtStartTime && secondsPassedAfterMidnight < secondsPassedAfterMidnightAtEndTime) {
-                return true;
-            }
+        List<PromptConfig> promptConfigList = new ArrayList<>();
+
+        for(Integer notificationTime:notificationTimes) {
+            promptConfigList.add(new PromptConfig(PromptConfig.Type.GENERAL, notificationTime));
         }
-        return false;
+
+        Log.d(LOG_TAG, "Prompt configs: " + promptConfigList.toString());
+
+        return promptConfigList;
     }
 
-    public static int convertStringTimetoSeconds(String time){
+    /**
+     * Gets all the times at which a notification needs to be shown, and check if the current time
+     * is within a window of 15 minutes from that time. Returns true if that is the case, false
+     * otherwise.
+     * @return A @link{PromptConfig} if a notification were supposed to be scheduled in the last 15
+     * minutes. Returns null if there are no notifications pending.
+     */
+    public static PromptConfig getPromptConfigForPendingNotification() {
+        Calendar c = Calendar.getInstance();
+        long now = c.getTimeInMillis();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        int midnightSeconds = (int) c.getTimeInMillis()/1000;
+        int secondsPassedAfterMidnightToday = (int) now/1000 - midnightSeconds;
+
+        int FIFTEEN_MINUTES_IN_SECONDS = 15 * 60;
+        int HALF_OF_FIFTEEN_MINUTES = FIFTEEN_MINUTES_IN_SECONDS/2;
+
+        for(PromptConfig promptConfig:getTimesAndConfigForNotification()) {
+            int notificationTimeAsPerSettings = promptConfig.getmNotificationTimeInSecondsFromMidnight();
+            int timeDifferenceBetweenNowAndNotificationTime = notificationTimeAsPerSettings - secondsPassedAfterMidnightToday;
+            Log.d(LOG_TAG, "Now: " + secondsPassedAfterMidnightToday +
+                    " Notification Time: " + notificationTimeAsPerSettings +
+                    " Time difference in notification" + timeDifferenceBetweenNowAndNotificationTime);
+            if(timeDifferenceBetweenNowAndNotificationTime  > -HALF_OF_FIFTEEN_MINUTES &&
+                    timeDifferenceBetweenNowAndNotificationTime < HALF_OF_FIFTEEN_MINUTES) {
+                Log.d(LOG_TAG, "Returning notification details from utils pending notification." + promptConfig.toString());
+                return promptConfig;
+            }
+        }
+        Log.d(LOG_TAG, "Returning null from utils pending notification.");
+        return null;
+    }
+
+    public static int convertStringTimeToSeconds(String time){
         int secondsPassed = 0;
         String [] timeString = time.split(":");
         int hour = Integer.parseInt(timeString[0]);
@@ -135,14 +178,4 @@ public class Utils {
         return secondsPassed;
     }
 
-    public static int[] toIntArray(List<Integer> integerList) {
-        int[] intArray = new int[integerList.size()];
-        for (int i = 0; i < integerList.size(); i++) {
-            intArray[i] = integerList.get(i);
-        }
-        return intArray;
-    }
-
-
 }
-

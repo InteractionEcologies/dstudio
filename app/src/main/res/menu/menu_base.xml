@@ -4,7 +4,7 @@
     tools:context=".ui.BaseActivity">
     <item
         android:id="@+id/action_logout"
-        app:showAsAction="always"
+        app:showAsAction="never"
         android:title="@string/action_logout"
         android:icon="@drawable/logout">
     </item>

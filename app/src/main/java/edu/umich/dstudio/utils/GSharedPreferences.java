@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -46,6 +48,10 @@ public class GSharedPreferences {
 
     public String getPreference(String key) {
         return mMyPreferences.getString(key, null);
+    }
+
+    public Set<String> getHashSetPreference(String key) {
+        return mMyPreferences.getStringSet(key, new HashSet<String>());
     }
 
     public void clear() {
