@@ -9,4 +9,10 @@
         android:title="Settings"
         android:icon="@drawable/ic_settings">
     </item>
+    <item
+        android:id="@+id/action_show_camera_activity"
+        app:showAsAction="never"
+        android:title="Notify Cam"
+        android:icon="@drawable/ic_settings">
+    </item>
 </menu>

@@ -26,7 +26,8 @@ public class NotificationUtils {
     public static Notification createNotification(Context context,
                                                   PackageManager pm,
                                                   PromptConfig config) {
-        Intent launchIntent = pm.getLaunchIntentForPackage(config.getIntentFilter());
+        Intent launchIntent = new Intent(context, config.getActivityType());
+        //launchIntent.setAction(config.getIntentFilter());
         PendingIntent pIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
         Notification n  = new Notification.Builder(context)
                 .setContentTitle(Constants.REMINDER_NOTIFICATION_TITLE)

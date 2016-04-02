@@ -1,5 +1,7 @@
 package edu.umich.dstudio.ui;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import edu.umich.dstudio.R;
+import edu.umich.dstudio.prompt.PromptConfig;
 import edu.umich.dstudio.prompt.PromptService;
 import edu.umich.dstudio.ui.addDataActivity.AddCameraPhotoActivity;
 import edu.umich.dstudio.ui.addDataActivity.AddGalleryPhotoActivity;
@@ -17,6 +20,7 @@ import edu.umich.dstudio.ui.addDataActivity.SettingsActivity;
 import edu.umich.dstudio.ui.addDataActivity.NoteEntryActivty;
 import edu.umich.dstudio.ui.listadapters.ActionObject;
 import edu.umich.dstudio.ui.listadapters.StableArrayAdapter;
+import edu.umich.dstudio.utils.NotificationUtils;
 
 public class MainActivity extends BaseActivity {
 
@@ -52,6 +56,14 @@ public class MainActivity extends BaseActivity {
         if (id == R.id.action_settings) {
             showSettingsScreen();
             return true;
+        }
+        if (id == R.id.action_show_camera_activity) {
+            PromptConfig pendingNotificationConfig = new PromptConfig(PromptConfig.Type.PICTURE, 0);
+            Notification n = NotificationUtils.createNotification(this,
+                    getPackageManager(), pendingNotificationConfig);
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.notify(0, n);
         }
         return super.onOptionsItemSelected(item);
     }
