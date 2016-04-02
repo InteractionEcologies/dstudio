@@ -70,7 +70,6 @@ public class GenericPhotoActivity extends BaseActivity {
                 rejectResults();
             }
         });
-
     }
 
     private void rejectResults() {

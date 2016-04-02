@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity {
             return true;
         }
         if (id == R.id.action_show_camera_activity) {
-            PromptConfig pendingNotificationConfig = new PromptConfig(PromptConfig.Type.PICTURE, 0);
+            PromptConfig pendingNotificationConfig = new PromptConfig(PromptConfig.Type.NOTE, 0);
             Notification n = NotificationUtils.createNotification(this,
                     getPackageManager(), pendingNotificationConfig);
             NotificationManager notificationManager =
