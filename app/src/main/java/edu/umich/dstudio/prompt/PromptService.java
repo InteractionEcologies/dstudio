@@ -26,6 +26,7 @@ import edu.umich.dstudio.model.LastLocation;
 import edu.umich.dstudio.ui.MainActivity;
 import edu.umich.dstudio.utils.Constants;
 import edu.umich.dstudio.utils.GSharedPreferences;
+import edu.umich.dstudio.utils.NotificationUtils;
 import edu.umich.dstudio.utils.Utils;
 
 /**
@@ -84,23 +85,10 @@ public class PromptService extends Service implements
     }
 
     private void createNotification(PromptConfig pendingNotificationConfig) {
-        PackageManager pm = getPackageManager();
-        Intent launchIntent = pm.getLaunchIntentForPackage("edu.umich.dstudio");
-        PendingIntent pIntent = PendingIntent.getActivity(this, 0, launchIntent, 0);
-
-        Notification n  = new Notification.Builder(this)
-                .setContentTitle(Constants.REMINDER_NOTIFICATION_TITLE)
-                .setContentText(Constants.REMINDER_NOTIFICATION_CONTENT)
-                .setSmallIcon(R.drawable.launcher_icon)
-                .setContentIntent(pIntent)
-                .setAutoCancel(true)
-                .build();
-        n.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
-
-
+        Notification n = NotificationUtils.createNotification(this,
+                getPackageManager(), pendingNotificationConfig);
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
         notificationManager.notify(0, n);
     }
 

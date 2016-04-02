@@ -73,6 +73,25 @@ public class PromptConfig {
         }
     }
 
+
+    public String getIntentFilter() {
+        switch (mPromptType) {
+            case MOOD:
+                return "edu.umich.dstudio.MOOD_ENTRY_ACTIVITY";
+            case MANAGEMENT_PLAN:
+                return "edu.umich.dstudio.QUESTIONNAIRE_ACTIVITY";
+            case NO_ACTIVITY:
+                return "edu.umich.dstudio.QUESTIONNAIRE_ACTIVITY";
+            case PICTURE:
+                return "edu.umich.dstudio.CAMERA_PHOTO_ACTIVITY";
+            case NOTE:
+                return "edu.umich.dstudio.NOTE_ENTRY_ACTIVITY";
+            case GENERAL:
+            default:
+                return "edu.umich.dstudio";
+        }
+    }
+
     public int getmNotificationTimeInSecondsFromMidnight() {
         return this.mNotificationTimeInSecondsFromMidnight;
     }
