@@ -84,7 +84,7 @@
                 <action android:name="edu.umich.dstudio.SETTINGS_ACTIVITY" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.addDataActivity.QuestionnaireActivity">
+        <activity android:name=".ui.addDataActivity.QuestionnaireActivity"
             android:label="@string/app_name">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -29,6 +29,8 @@ public class NotificationUtils {
         Intent launchIntent = new Intent(context, config.getActivityType());
         //launchIntent.setAction(config.getIntentFilter());
         launchIntent.putExtra("FROM_NOTIFICATION", true);
+        //launchIntent.putExtra("PROMPT_TYPE", config.getmPromptType());
+        launchIntent.putExtra("PROMPT_TYPE", config.getmPromptType().name());
         PendingIntent pIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
         Notification n  = new Notification.Builder(context)
                 .setContentTitle(Constants.REMINDER_NOTIFICATION_TITLE)

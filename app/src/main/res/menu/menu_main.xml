@@ -15,4 +15,10 @@
         android:title="Notify Cam"
         android:icon="@drawable/ic_settings">
     </item>
+    <item
+        android:id="@+id/action_show_questionnaire_activity"
+        app:showAsAction="never"
+        android:title="Notify Question"
+        android:icon="@drawable/ic_settings">
+    </item>
 </menu>

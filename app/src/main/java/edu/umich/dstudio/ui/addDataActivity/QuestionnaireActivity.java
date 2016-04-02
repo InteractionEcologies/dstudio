@@ -31,19 +31,20 @@ public class QuestionnaireActivity extends BaseActivity{
     private TextView firstQuestion;
     private TextView secondQuestion;
     private EditText firstQuestionData;
-    private  EditText secondQuestionData;
+    private EditText secondQuestionData;
     private ImageView acceptButton;
     private ImageView rejectButton;
 
-    // todo change to access bundle from notification
-    private PromptConfig promptConfig = Utils.getPromptConfigForPendingNotification();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionnaire);
 
-        // todo change to access bundle from notification
-        List<String> questionList = Utils.getQuestionList(promptConfig.getmPromptType());
+        List<String> questionList = Utils.getQuestionList(PromptConfig.Type.MANAGEMENT_PLAN);
+
+        /*if(getIntent().getExtras().getString("PROMPT_TYPE")!=null) {
+            questionList = Utils.getQuestionList("MANAGEMENT_PLAN");
+        }*/
 
         if(questionList.size() == 1) {
             firstQuestion = (TextView) findViewById(R.id.first_question);
@@ -79,6 +80,9 @@ public class QuestionnaireActivity extends BaseActivity{
             }
         });
 
+        if(getIntent().getExtras()!=null && getIntent().getExtras().getBoolean("FROM_NOTIFICATION")) {
+            showToast("This screen was started from a notification.");
+        }
     }
 
     /**
@@ -89,20 +93,22 @@ public class QuestionnaireActivity extends BaseActivity{
         Iterator it = questionAnswerMap.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
-            String answer = (String) pair.getValue();
+            TextView question = (TextView) pair.getKey();
+            EditText answer = (EditText) pair.getValue();
+            String questionString = question.getText().toString();
+            String answerString =  answer.getText().toString();
             // Make sure that there is some data entered by the user in the note field.
-            if(answer ==null || answer.equals("") || answer.trim().isEmpty()){
+            if(answerString ==null || answerString.equals("") || answerString.trim().isEmpty()){
                 showToast("Cannot add note without any content.");
                 return;
             } else {
-                QuestionAnswer QnA = new QuestionAnswer((String) pair.getKey(), (String) pair.getValue(), (float) l.latitude, (float) l.longitude);
+                QuestionAnswer QnA = new QuestionAnswer( questionString, answerString, (float) l.latitude, (float) l.longitude);
                 questionAnswerList.add(QnA);
             }
-                mFirebaseWrapper.uploadQuestionAnswer(questionAnswerList);
-                showToast("Your answer has been recorded");
-                finish();
-
             }
+        mFirebaseWrapper.uploadQuestionAnswer(questionAnswerList);
+        showToast("Your answer has been recorded");
+        finish();
         }
 
     /**

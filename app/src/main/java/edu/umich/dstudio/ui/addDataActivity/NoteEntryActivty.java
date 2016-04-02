@@ -46,7 +46,7 @@ public class NoteEntryActivty extends BaseActivity {
         });
 
         if(getIntent().getExtras()!=null && getIntent().getExtras().getBoolean("FROM_NOTIFICATION")) {
-            showToast("This screen was started from a notification.");
+            showToast("This screen was started from a notification." + getIntent().getStringExtra("PROMPT_TYPE").toString());
         }
     }
 

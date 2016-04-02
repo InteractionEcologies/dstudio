@@ -106,4 +106,6 @@ public class PromptConfig {
         return mPromptType;
     }
 
+    //public String getmPromptTypeString() { return this.mPromptType.toString();}
+
 }

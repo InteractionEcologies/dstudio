@@ -65,6 +65,14 @@ public class MainActivity extends BaseActivity {
                     (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             notificationManager.notify(0, n);
         }
+        if (id == R.id.action_show_questionnaire_activity) {
+            PromptConfig pendingNotificationConfig = new PromptConfig(PromptConfig.Type.MANAGEMENT_PLAN, 0);
+            Notification n = NotificationUtils.createNotification(this,
+                    getPackageManager(), pendingNotificationConfig);
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.notify(0, n);
+        }
         return super.onOptionsItemSelected(item);
     }
 

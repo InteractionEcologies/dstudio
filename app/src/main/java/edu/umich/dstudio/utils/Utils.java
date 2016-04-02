@@ -178,8 +178,8 @@ public class Utils {
         return secondsPassed;
     }
 
-    public static List<String> getQuestionList(PromptConfig.Type type){
-    switch(type){
+    public static List<String> getQuestionList(PromptConfig.Type promptType){
+    switch(promptType){
         case MOOD:
             return Constants.MOOD_QUESTIONS;
         case NO_ACTIVITY:
