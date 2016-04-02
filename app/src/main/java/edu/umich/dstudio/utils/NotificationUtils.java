@@ -5,6 +5,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.util.Log;
+
+import java.util.Random;
 
 import edu.umich.dstudio.R;
 import edu.umich.dstudio.prompt.PromptConfig;
@@ -26,12 +30,21 @@ public class NotificationUtils {
     public static Notification createNotification(Context context,
                                                   PackageManager pm,
                                                   PromptConfig config) {
+
         Intent launchIntent = new Intent(context, config.getActivityType());
-        //launchIntent.setAction(config.getIntentFilter());
-        launchIntent.putExtra("FROM_NOTIFICATION", true);
-        //launchIntent.putExtra("PROMPT_TYPE", config.getmPromptType());
-        launchIntent.putExtra("PROMPT_TYPE", config.getmPromptType().name());
-        PendingIntent pIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
+
+        // Add extras to intent
+        Bundle extras = new Bundle();
+        extras.putBoolean("FROM_NOTIFICATION", true);
+        extras.putString("PROMPT_TYPE", config.getmPromptType().name());
+        Log.d("NotificationUtils: ", config.getmPromptType().name());
+        launchIntent.putExtras(extras);
+
+        // Create pending intent from the actual intent and notification object.
+        PendingIntent pIntent = PendingIntent.getActivity(context,
+                (int) Math.floor(Math.random() * Integer.MAX_VALUE),
+                launchIntent, PendingIntent.FLAG_ONE_SHOT);
+                //PendingIntent.getActivity(context, 0, launchIntent, 0);
         Notification n  = new Notification.Builder(context)
                 .setContentTitle(Constants.REMINDER_NOTIFICATION_TITLE)
                 .setContentText(config.getMessage())

@@ -179,16 +179,16 @@ public class Utils {
     }
 
     public static List<String> getQuestionList(PromptConfig.Type promptType){
-    switch(promptType){
-        case MOOD:
-            return Constants.MOOD_QUESTIONS;
-        case NO_ACTIVITY:
-            return Constants.NO_ACTIVITY_QUESTIONS;
-        case MANAGEMENT_PLAN:
-            return Constants.MANAGEMENT_PLAN_QUESTIONS;
-        default:
-            return Constants.DEFAULT_QUESTIONS;
-    }
+        switch(promptType){
+            case MOOD:
+                return Constants.MOOD_QUESTIONS;
+            case NO_ACTIVITY:
+                return Constants.NO_ACTIVITY_QUESTIONS;
+            case MANAGEMENT_PLAN:
+                return Constants.MANAGEMENT_PLAN_QUESTIONS;
+            default:
+                return Constants.DEFAULT_QUESTIONS;
+        }
     }
 
 }

@@ -1,11 +1,14 @@
 package edu.umich.dstudio.ui.addDataActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.Set;
 
 import edu.umich.dstudio.R;
 import edu.umich.dstudio.model.Note;
@@ -45,8 +48,12 @@ public class NoteEntryActivty extends BaseActivity {
             }
         });
 
-        if(getIntent().getExtras()!=null && getIntent().getExtras().getBoolean("FROM_NOTIFICATION")) {
-            showToast("This screen was started from a notification." + getIntent().getStringExtra("PROMPT_TYPE").toString());
+        Bundle extras = getIntent().getExtras();
+        if(extras !=null && extras.getBoolean("FROM_NOTIFICATION")) {
+            for(String key:extras.keySet()) {
+                Log.d("NoteEntryActivity", key);
+            }
+            showToast("This screen was started from a notification with type:" + getIntent().getExtras().getString("PROMPT_TYPE", ""));
         }
     }
 
