@@ -154,6 +154,7 @@ public class BaseActivity extends AppCompatActivity implements
             logout();
             return true;
         }
+        //new thing, create notification
         return super.onOptionsItemSelected(item);
     }
 

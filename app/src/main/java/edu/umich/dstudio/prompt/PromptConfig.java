@@ -1,10 +1,12 @@
 package edu.umich.dstudio.prompt;
 
+import edu.umich.dstudio.model.QuestionAnswer;
 import edu.umich.dstudio.ui.MainActivity;
 import edu.umich.dstudio.ui.addDataActivity.AddGalleryPhotoActivity;
 import edu.umich.dstudio.ui.addDataActivity.GenericPhotoActivity;
 import edu.umich.dstudio.ui.addDataActivity.MoodEntryActivity;
 import edu.umich.dstudio.ui.addDataActivity.NoteEntryActivty;
+import edu.umich.dstudio.ui.addDataActivity.QuestionnaireActivity;
 
 /**
  * Created by neera_000 on 4/1/2016.
@@ -12,11 +14,11 @@ import edu.umich.dstudio.ui.addDataActivity.NoteEntryActivty;
  */
 public class PromptConfig {
 
-    private Type mPromptType;
+    public Type mPromptType;
     private int mNotificationTimeInSecondsFromMidnight;
 
     public enum Type {
-        MOOD, PICTURE, NOTE, GENERAL
+        MOOD, PICTURE, NOTE, GENERAL, NO_ACTIVITY, MANAGEMENT_PLAN
     }
 
     /**
@@ -30,6 +32,9 @@ public class PromptConfig {
         this.mPromptType = promptType;
         this.mNotificationTimeInSecondsFromMidnight = aNotificationTimeInSecondsFromMidnight;
     }
+    public PromptConfig(){
+
+    }
 
     public String getMessage() {
         switch (mPromptType) {
@@ -37,6 +42,10 @@ public class PromptConfig {
                 return "Everyone forgets, we get that. That's why God made notifications.";
             case MOOD:
                 return "We see that you haven't logged your mood today. Want to tell us how your day went?";
+            case MANAGEMENT_PLAN:
+                return "Tell us what is keeping you busy?";
+            case NO_ACTIVITY:
+                return "We haven't heard from you in a while!";
             case PICTURE:
                 return "Let's log your GM info. It's as simple as point and click -  we promise!";
             case NOTE:
@@ -50,6 +59,10 @@ public class PromptConfig {
         switch (mPromptType) {
             case MOOD:
                 return MoodEntryActivity.class;
+            case MANAGEMENT_PLAN:
+                return QuestionnaireActivity.class;
+            case NO_ACTIVITY:
+                return QuestionnaireActivity.class;
             case PICTURE:
                 return AddGalleryPhotoActivity.class;
             case NOTE:
@@ -69,4 +82,9 @@ public class PromptConfig {
         return "Prompt: Type " + this.mPromptType.toString() +
                 " Time:" + this.mNotificationTimeInSecondsFromMidnight;
     }
+
+    public Type getmPromptType() {
+        return mPromptType;
+    }
+
 }

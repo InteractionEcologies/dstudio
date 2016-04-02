@@ -7,6 +7,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.List;
+
 import edu.umich.dstudio.utils.Constants;
 import edu.umich.dstudio.utils.GSharedPreferences;
 import edu.umich.dstudio.utils.Utils;
@@ -71,6 +73,14 @@ public class FirebaseWrapper {
         /* Create a new node and get a random id */
         Firebase newLastLocationRef = locationListRef.push();
         newLastLocationRef.setValue(l);
+
+    }
+    public static void uploadQuestionAnswer(List<QuestionAnswer> QnAList) {
+        String userEmail = Utils.encodeEmail(GSharedPreferences.getInstance().getPreference(Constants.ID_SHAREDPREF_EMAIL));
+        Firebase questionAnswerListRef = new Firebase(Constants.FIREBASE_URL_QUESTION_ANSWER).child(userEmail);
+        /* Create a new node and get a random id */
+        Firebase newQuestionAnswerListRef = questionAnswerListRef.push();
+        newQuestionAnswerListRef.setValue(QnAList);
 
     }
 }

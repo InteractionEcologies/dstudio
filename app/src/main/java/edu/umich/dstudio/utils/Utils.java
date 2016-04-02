@@ -178,4 +178,17 @@ public class Utils {
         return secondsPassed;
     }
 
+    public static List<String> getQuestionList(PromptConfig.Type type){
+    switch(type){
+        case MOOD:
+            return Constants.MOOD_QUESTIONS;
+        case NO_ACTIVITY:
+            return Constants.NO_ACTIVITY_QUESTIONS;
+        case MANAGEMENT_PLAN:
+            return Constants.MANAGEMENT_PLAN_QUESTIONS;
+        default:
+            return Constants.DEFAULT_QUESTIONS;
+    }
+    }
+
 }

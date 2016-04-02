@@ -75,4 +75,8 @@ public class Mood {
         this.longitude = longitude;
         this.createdTime = new Date().toString();
     }
+
+    /**todo: a) add a simple annotation after selecting mood, OR
+    b)compare with last saved mood and ask why did your mood change this way?, OR
+    c)if it is a negative mood that is sellected, ask what happened?**/
 }

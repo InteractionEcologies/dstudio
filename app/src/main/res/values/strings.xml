@@ -116,6 +116,8 @@
       -->
     <!-- Activity Titles  -->
     <string name="title_activity_create_account">Create Account</string>
+    <string name="title_activity_answer_questions">Please answer the following questions</string>
+
 
     <!-- Login and Create Account Screen  -->
     <string name="text_dont_have_account">Don\'t have an account?</string>
