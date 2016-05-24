@@ -23,6 +23,8 @@ public class Mood {
     public float latitude;
     public float longitude;
 
+    String moodAnnotation;
+
     public float getX() {
         return X;
     }
@@ -59,11 +61,15 @@ public class Mood {
         return createdTime;
     }
 
+    public String getMoodAnnotation() {
+        return moodAnnotation;
+    }
+
     public Mood() {
 
     }
 
-    public Mood(float x, float y, boolean isSelected, boolean isCreated, float moodLevel, float energyLevel, float latitude, float longitude) {
+    public Mood(float x, float y, boolean isSelected, boolean isCreated, float moodLevel, float energyLevel, float latitude, float longitude, String moodAnnotation) {
 
         X = x;
         Y = y;
@@ -74,6 +80,7 @@ public class Mood {
         this.latitude = latitude;
         this.longitude = longitude;
         this.createdTime = new Date().toString();
+        this.moodAnnotation = moodAnnotation;
     }
 
     /**todo: a) add a simple annotation after selecting mood, OR

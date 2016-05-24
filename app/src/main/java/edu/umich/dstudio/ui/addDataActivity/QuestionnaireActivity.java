@@ -40,12 +40,15 @@ public class QuestionnaireActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionnaire);
 
-        List<String> questionList = Utils.getQuestionList(PromptConfig.Type.MANAGEMENT_PLAN);
+        List<String> questionList;
 
-        /*if(getIntent().getExtras().getString("PROMPT_TYPE")!=null) {
-            questionList = Utils.getQuestionList("MANAGEMENT_PLAN");
-        }*/
-
+       if (getIntent().getExtras().getString("PROMPT_TYPE")!=null) {
+           PromptConfig.Type promptType = (PromptConfig.Type.valueOf(getIntent().getExtras().getString("PROMPT_TYPE")));
+           questionList = Utils.getQuestionList(promptType);
+        }
+        else{
+           questionList = Utils.getQuestionList(PromptConfig.Type.valueOf(""));
+       }
         if(questionList.size() == 1) {
             firstQuestion = (TextView) findViewById(R.id.first_question);
             firstQuestion.setText(questionList.get(0));

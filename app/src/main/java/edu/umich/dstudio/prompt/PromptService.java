@@ -8,6 +8,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+
+import com.firebase.client.Firebase;
 import com.google.android.gms.location.LocationListener;
 import android.os.Bundle;
 import android.os.IBinder;

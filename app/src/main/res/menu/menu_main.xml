@@ -16,9 +16,15 @@
         android:icon="@drawable/ic_settings">
     </item>
     <item
-        android:id="@+id/action_show_questionnaire_activity"
+        android:id="@+id/action_show_questionnaire_activity_mgmt"
         app:showAsAction="never"
-        android:title="Notify Question"
+        android:title="Notify Question Mgmt"
+        android:icon="@drawable/ic_settings">
+    </item>
+    <item
+        android:id="@+id/action_show_questionnaire_activity_mood"
+        app:showAsAction="never"
+        android:title="Notify Question Mood"
         android:icon="@drawable/ic_settings">
     </item>
 </menu>
