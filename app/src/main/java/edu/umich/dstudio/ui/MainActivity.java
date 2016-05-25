@@ -24,11 +24,13 @@ import edu.umich.dstudio.utils.NotificationUtils;
 
 public class MainActivity extends BaseActivity {
 
-    private static final int CAMERA = 0;
-    private static final int UPLOAD_FROM_GALLERY = 1;
-    private static final int MOOD = 2;
-    private static final int NOTE = 3;
-
+    private static final int CAMERA_GLUCOSE_READING = 0;
+    private static final int CAMERA_INSULIN_SHOT = 1;
+    private static final int CAMERA_FOOD = 2;
+    private static final int CAMERA_GENERAL = 3;
+    private static final int UPLOAD_FROM_GALLERY = 4;
+    private static final int MOOD = 5;
+    private static final int NOTE = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +97,11 @@ public class MainActivity extends BaseActivity {
 
         // the action object is the model behind the list that is shown on the main screen.
         final ActionObject[] array = {
-                new ActionObject("Take Picture", "A", R.drawable.camera),
-                new ActionObject("Upload Picture", "A", R.drawable.upload_from_gallery),
+                new ActionObject("Take Glucose Reading Pictures", "A", R.drawable.glucose_reading),
+                new ActionObject("Take Insulin Shot Pictures", "A", R.drawable.insulin_shot),
+                new ActionObject("Take Food Pictures", "A", R.drawable.food),
+                new ActionObject("Take Other Pictures", "A", R.drawable.camera),
+                new ActionObject("Upload Screenshot", "A", R.drawable.upload_from_gallery),
                 new ActionObject("Report Mood", "A", R.drawable.mood),
                 new ActionObject("Take Note", "A", R.drawable.note)
         };
@@ -112,13 +117,36 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // The position here corresponds to position of objects in the array passed above.
+                Bundle extras = new Bundle();
                 switch (position) {
-                    case CAMERA:
+                    case CAMERA_GLUCOSE_READING:
+                        Intent addCameraGlucoseReadingPhotoIntent = new Intent(MainActivity.this, AddCameraPhotoActivity.class);
+                        extras.putString("photoType", "GLUCOSE_READING");
+                        addCameraGlucoseReadingPhotoIntent.putExtras(extras);
+                        startActivity(addCameraGlucoseReadingPhotoIntent);
+                        break;
+                    case CAMERA_INSULIN_SHOT:
+                        Intent addCameraInsulinShotPhotoIntent = new Intent(MainActivity.this, AddCameraPhotoActivity.class);
+                        extras.putString("photoType", "INSULIN_SHOT");
+                        addCameraInsulinShotPhotoIntent.putExtras(extras);
+                        startActivity(addCameraInsulinShotPhotoIntent);
+                        break;
+                    case CAMERA_FOOD:
+                        Intent addCameraFoodPhotoIntent = new Intent(MainActivity.this, AddCameraPhotoActivity.class);
+                        extras.putString("photoType", "FOOD");
+                        addCameraFoodPhotoIntent.putExtras(extras);
+                        startActivity(addCameraFoodPhotoIntent);
+                        break;
+                    case CAMERA_GENERAL:
                         Intent addCameraPhotoIntent = new Intent(MainActivity.this, AddCameraPhotoActivity.class);
+                        extras.putString("photoType", "OTHER");
+                        addCameraPhotoIntent.putExtras(extras);
                         startActivity(addCameraPhotoIntent);
                         break;
                     case UPLOAD_FROM_GALLERY:
                         Intent addGalleryPhotoIntent = new Intent(MainActivity.this, AddGalleryPhotoActivity.class);
+                        extras.putString("photoType", "SCREENSHOT");
+                        addGalleryPhotoIntent.putExtras(extras);
                         startActivity(addGalleryPhotoIntent);
                         break;
                     case MOOD:

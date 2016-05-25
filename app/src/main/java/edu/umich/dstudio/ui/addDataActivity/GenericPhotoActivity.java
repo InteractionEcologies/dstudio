@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.desmond.squarecamera.CameraActivity;
 import com.desmond.squarecamera.ImageUtility;
@@ -46,6 +47,8 @@ public class GenericPhotoActivity extends BaseActivity {
     protected EditText annotation;
 
     protected String base64;
+    protected String photoTypeKey = "photoType";
+    protected String photoTypeValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,9 @@ public class GenericPhotoActivity extends BaseActivity {
         setContentView(R.layout.activity_add_photo);
         preview = (ImageView) findViewById(R.id.preview);
         annotation = (EditText) findViewById(R.id.annotation);
+
+        photoTypeValue = getIntent().getExtras().getString(photoTypeKey);
+        showToast("Checking in generic class : " + photoTypeValue);
 
         // Add click listeners for buttons
         ImageView acceptButton = (ImageView) findViewById(R.id.acceptButton);
@@ -89,7 +95,7 @@ public class GenericPhotoActivity extends BaseActivity {
                     (float) l.latitude,
                     (float) l.longitude,
                     base64,
-                    noteData);
+                    noteData, Photo.photoType.valueOf(photoTypeValue));
             mFirebaseWrapper.uploadPhoto(photo);
             showToast("Uploading annotated photo.");
             finish();

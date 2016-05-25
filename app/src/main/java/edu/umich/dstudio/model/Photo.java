@@ -11,6 +11,11 @@ public class Photo {
     public String base64Data;
     public String annotation;
     String createdTime;
+    public photoType type;
+
+    public enum photoType {
+        GLUCOSE_READING, INSULIN_SHOT, FOOD, OTHER, SCREENSHOT
+    }
 
     public float getLatitude() {
         return latitude;
@@ -32,11 +37,12 @@ public class Photo {
         return createdTime;
     }
 
-    public Photo(float latitude, float longitude, String base64Data, String annotation) {
+    public Photo(float latitude, float longitude, String base64Data, String annotation, photoType type) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.base64Data = base64Data;
         this.annotation = annotation;
         this.createdTime = new Date().toString();
+        this.type = type;
     }
 }
