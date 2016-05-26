@@ -7,6 +7,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import edu.umich.dstudio.utils.Constants;
@@ -45,7 +47,7 @@ public class FirebaseWrapper {
 
     public static void uploadMood(Mood m) {
         String userEmail = Utils.encodeEmail(GSharedPreferences.getInstance().getPreference(Constants.ID_SHAREDPREF_EMAIL));
-        Firebase moodListRef = new Firebase(Constants.FIREBASE_URL_MOODS).child(userEmail);
+        Firebase moodListRef = new Firebase(Constants.FIREBASE_URL_MOODS).child(userEmail).child(new SimpleDateFormat("MMddyyyy").format(new Date()).toString());
         /* Create a new node and get a random id */
         Firebase newMoodRef = moodListRef.push();
         newMoodRef.setValue(m);
@@ -53,7 +55,7 @@ public class FirebaseWrapper {
 
     public static void uploadNote(Note n) {
         String userEmail = Utils.encodeEmail(GSharedPreferences.getInstance().getPreference(Constants.ID_SHAREDPREF_EMAIL));
-        Firebase notesListRef = new Firebase(Constants.FIREBASE_URL_NOTES).child(userEmail);
+        Firebase notesListRef = new Firebase(Constants.FIREBASE_URL_NOTES).child(userEmail).child(new SimpleDateFormat("MMddyyyy").format(new Date()).toString());
         /* Create a new node and get a random id */
         Firebase newNoteRef = notesListRef.push();
         newNoteRef.setValue(n);
@@ -61,7 +63,7 @@ public class FirebaseWrapper {
 
     public static void uploadPhoto(Photo p) {
         String userEmail = Utils.encodeEmail(GSharedPreferences.getInstance().getPreference(Constants.ID_SHAREDPREF_EMAIL));
-        Firebase photosListRef = new Firebase(Constants.FIREBASE_URL_PHOTOS).child(userEmail);
+        Firebase photosListRef = new Firebase(Constants.FIREBASE_URL_PHOTOS).child(userEmail).child(new SimpleDateFormat("MMddyyyy").format(new Date()).toString());
         /* Create a new node and get a random id */
         Firebase newPhotoRef = photosListRef.push();
         newPhotoRef.setValue(p);
@@ -69,7 +71,7 @@ public class FirebaseWrapper {
 
     public static void uploadLastLocation(LastLocation l) {
         String userEmail = Utils.encodeEmail(GSharedPreferences.getInstance().getPreference(Constants.ID_SHAREDPREF_EMAIL));
-        Firebase locationListRef = new Firebase(Constants.FIREBASE_URL_LAST_LOCATION).child(userEmail);
+        Firebase locationListRef = new Firebase(Constants.FIREBASE_URL_LAST_LOCATION).child(userEmail).child(new SimpleDateFormat("MMddyyyy").format(new Date()).toString());
         /* Create a new node and get a random id */
         Firebase newLastLocationRef = locationListRef.push();
         newLastLocationRef.setValue(l);
@@ -77,7 +79,7 @@ public class FirebaseWrapper {
     }
     public static void uploadQuestionAnswer(List<QuestionAnswer> QnAList) {
         String userEmail = Utils.encodeEmail(GSharedPreferences.getInstance().getPreference(Constants.ID_SHAREDPREF_EMAIL));
-        Firebase questionAnswerListRef = new Firebase(Constants.FIREBASE_URL_QUESTION_ANSWER).child(userEmail);
+        Firebase questionAnswerListRef = new Firebase(Constants.FIREBASE_URL_QUESTION_ANSWER).child(userEmail).child(new SimpleDateFormat("MMddyyyy").format(new Date()).toString());
         /* Create a new node and get a random id */
         Firebase newQuestionAnswerListRef = questionAnswerListRef.push();
         newQuestionAnswerListRef.setValue(QnAList);

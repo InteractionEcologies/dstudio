@@ -40,7 +40,8 @@
 
         <!-- Secondary screen related stuff - where all data addition happens -->
         <activity android:name=".ui.addDataActivity.MoodEntryActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
